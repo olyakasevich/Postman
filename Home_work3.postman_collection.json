@@ -1,0 +1,388 @@
+{
+	"info": {
+		"_postman_id": "d067573f-7e52-4b94-b786-c2cae199081e",
+		"name": "Home_work3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39788209"
+	},
+	"item": [
+		{
+			"name": "Task_1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"",
+							"pm.environment.set(\"token\", jsonData.token); "
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "olya",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "oollyyaa",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/login",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task_2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();  //=ответ в json",
+							"",
+							"let jsonReq = JSON.parse(pm.request.body);",
+							"",
+							"pm.test(\"Проверка структуры\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"person\"); ",
+							"    pm.expect(jsonData.person).to.have.property(\"u_age\"); ",
+							"    pm.expect(jsonData.person).to.have.property(\"u_name\"); ",
+							"    pm.expect(jsonData.person).to.have.property(\"u_salary_1_5_year\"); ",
+							"    pm.expect(jsonData).to.have.property(\"qa_salary_after_12_months\"); ",
+							"    pm.expect(jsonData).to.have.property(\"qa_salary_after_6_months\"); ",
+							"    pm.expect(jsonData).to.have.property(\"start_qa_salary\"); //property - парамет",
+							"});",
+							"",
+							"pm.test(\"Проверка умножения\", function () {",
+							"    pm.expect(jsonData.qa_salary_after_6_months).to.eql(jsonReq.salary * 2);",
+							"    pm.expect(jsonData.qa_salary_after_12_months).to.eql(+jsonReq.salary * 2.9);",
+							"    pm.expect(jsonData.person.u_salary_1_5_year).to.eql(+jsonReq.salary * 4);",
+							"});",
+							"",
+							"pm.environment.set(\"salary15\", jsonData.person.u_salary_1_5_year); "
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"age\": {{age}},\n  \"name\": \"{{name}}\",\n  \"salary\": {{salary}},\n  \"auth_token\": \"{{token}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/user_info",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"user_info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task_3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();  //=ответ в json",
+							"",
+							"let jsonReq = request.data;",
+							"",
+							"pm.test(\"Проверка структуры\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"age\"); ",
+							"    pm.expect(jsonData).to.have.property(\"name\"); ",
+							"    pm.expect(jsonData).to.have.property(\"salary\");  //property - парамет",
+							"});",
+							"",
+							"pm.test(\"Проверка умножения\", function () {",
+							"    pm.expect(jsonData.salary[0]).to.eql(+jsonReq.salary);",
+							"    pm.expect(+jsonData.salary[1]).to.eql(+jsonReq.salary * 2);",
+							"    pm.expect(+jsonData.salary[2]).to.eql(+jsonReq.salary * 3);",
+							"});",
+							"",
+							"pm.test(\"Проверка элементов массива\", function () {",
+							"    pm.expect(+jsonData.salary[2] > +jsonData.salary[1]).to.be.true;",
+							"    pm.expect(+jsonData.salary[2] > +jsonData.salary[0]).to.be.true;",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "{{age}}",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "{{name}}",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "{{salary}}",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/new_data",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"new_data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task_4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();  //=ответ в json",
+							"",
+							"let jsonReq = request.data;",
+							"",
+							"pm.test(\"Проверка структуры\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"age\").to.be.a(\"number\"); ",
+							"    pm.expect(jsonData).to.have.property(\"daily_food\").to.be.a(\"number\"); ",
+							"    pm.expect(jsonData).to.have.property(\"daily_sleep\").to.be.a(\"number\"); ",
+							"    pm.expect(jsonData).to.have.property(\"name\").to.be.a(\"string\");  //property - парамет",
+							"});",
+							"",
+							"pm.test(\"Проверка умножения\", function () {",
+							"    pm.expect(+jsonData.daily_food).to.eql(+jsonReq.weight * 0.012);",
+							"    pm.expect(+jsonData.daily_sleep).to.eql(+jsonReq.weight * 2.5);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "{{age}}",
+							"type": "text"
+						},
+						{
+							"key": "weight",
+							"value": "55",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "{{name}}",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/test_pet_info\n",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"test_pet_info\n"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task_5",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();  //=ответ в json",
+							"",
+							"let jsonReq = request.data;",
+							"",
+							"pm.test(\"Проверка структуры\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"age\").to.be.a(\"string\"); ",
+							"    pm.expect(jsonData).to.have.property(\"name\").to.be.a(\"string\"); ",
+							"    pm.expect(jsonData).to.have.property(\"salary\").to.be.a(\"number\"); ",
+							"    pm.expect(jsonData).to.have.property(\"family\").to.be.an(\"object\");  //property - парамет",
+							"});",
+							"",
+							"pm.test(\"Проверка имени\", function () {",
+							"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"name\")); //  get- вытащить, set - записать",
+							"});",
+							"",
+							"pm.test(\"Проверка возраста\", function () {",
+							"    pm.expect(jsonData.age).to.eql(jsonReq.age); ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "{{age}}",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "{{salary15}}",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "{{name}}",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/get_test_user",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"get_test_user"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.test(\"Status code is 200\", function () {",
+					"    pm.response.to.have.status(200);",
+					"});",
+					"",
+					""
+				]
+			}
+		}
+	]
+}
